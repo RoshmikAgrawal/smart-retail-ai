@@ -6,7 +6,6 @@ import {
   Bot, 
   LayoutDashboard, 
   Terminal, 
-  BookOpenCheck,
   ShieldCheck,
   Activity
 } from 'lucide-react';
@@ -17,8 +16,7 @@ export type ActiveTab =
   | 'classifier' 
   | 'sentiment' 
   | 'chatbot' 
-  | 'api' 
-  | 'architecture';
+  | 'api';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -34,7 +32,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, apiOnli
     { id: 'sentiment' as ActiveTab, label: 'NLP Sentiment (B1/B2)', icon: MessageSquareHeart },
     { id: 'chatbot' as ActiveTab, label: 'FAQ Chatbot (B3)', icon: Bot },
     { id: 'api' as ActiveTab, label: 'API Gateway (C3)', icon: Terminal },
-    { id: 'architecture' as ActiveTab, label: 'Architecture & Docs', icon: BookOpenCheck },
   ];
 
   return (

@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
-import { 
-  MessageSquareHeart, 
-  Sparkles, 
-  Send, 
-  Smile, 
-  Frown, 
-  Meh, 
-  RefreshCw, 
-  FileText, 
-  Scissors, 
+import {
+  MessageSquareHeart,
+  Send,
+  Smile,
+  Frown,
+  Meh,
+  RefreshCw,
+  FileText,
+  Scissors,
   BarChart2,
   CheckCircle2
 } from 'lucide-react';
-import { SentimentAnalysisResult } from '../types';
+import { SentimentResponseData } from '../types'; // Aligned to official schema contracts
+
+const BACKEND_URL = 'http://localhost:8000';
 
 export const SentimentAnalyzerView: React.FC = () => {
   const [inputText, setInputText] = useState<string>(
     'The store layout was beautiful and checkout was super fast! Staff was very polite, though the parking lot was slightly crowded.'
   );
   const [analyzing, setAnalyzing] = useState<boolean>(false);
-  const [sentimentResult, setSentimentResult] = useState<SentimentAnalysisResult | null>({
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [sentimentResult, setSentimentResult] = useState<SentimentResponseData | null>({
     originalText: 'The store layout was beautiful and checkout was super fast! Staff was very polite, though the parking lot was slightly crowded.',
     cleanedText: 'the store layout was beautiful and checkout was super fast staff was very polite though the parking lot was slightly crowded',
     tokens: ['the', 'store', 'layout', 'was', 'beautiful', 'and', 'checkout', 'was', 'super', 'fast', 'staff', 'was', 'very', 'polite', 'though', 'the', 'parking', 'lot', 'was', 'slightly', 'crowded'],
@@ -54,21 +56,25 @@ export const SentimentAnalyzerView: React.FC = () => {
 
   const handleAnalyzeSentiment = async (reviewText?: string) => {
     setAnalyzing(true);
+    setErrorMessage(null);
     const textToAnalyze = reviewText || inputText;
 
     try {
-      const response = await fetch('/api/analyze-sentiment', {
+      const response = await fetch(`${BACKEND_URL}/api/analyze-sentiment`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': 'retail_ai_secret_handshake_2026' },
         body: JSON.stringify({ text: textToAnalyze }),
       });
 
       const resData = await response.json();
-      if (resData.success) {
+      if (resData.success && resData.data) {
         setSentimentResult(resData.data);
+      } else {
+        throw new Error(resData.error || 'NLP compilation exception.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Sentiment analysis failed:', error);
+      setErrorMessage(error.message || 'Connection link to NLP gateway dropped.');
     } finally {
       setAnalyzing(false);
     }
@@ -76,7 +82,7 @@ export const SentimentAnalyzerView: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Dynamic Module Header */}
       <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2 text-indigo-600 font-semibold text-xs uppercase tracking-wider">
@@ -90,12 +96,12 @@ export const SentimentAnalyzerView: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200 font-mono text-xs font-semibold text-slate-700">
-          <span>Deliverable: sentiment_model.pkl + vectorizer.pkl</span>
+          <span>Deliverable: sentiment_model.joblib + vectorizer.pkl</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Review Input & Sample Dataset */}
+        {/* Left Column: Review Input */}
         <div className="lg:col-span-1 space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
             <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
@@ -107,14 +113,21 @@ export const SentimentAnalyzerView: React.FC = () => {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               rows={4}
+              disabled={analyzing}
               placeholder="Paste customer review or chat transcript here..."
-              className="w-full p-3 text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
+              className="w-full p-3 text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none disabled:opacity-60"
             />
+
+            {errorMessage && (
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs font-medium">
+                {errorMessage}
+              </div>
+            )}
 
             <button
               onClick={() => handleAnalyzeSentiment()}
               disabled={analyzing || !inputText.trim()}
-              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2 disabled:opacity-50"
+              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2 disabled:bg-slate-800"
             >
               {analyzing ? (
                 <>
@@ -140,7 +153,7 @@ export const SentimentAnalyzerView: React.FC = () => {
                       setInputText(sample.text);
                       handleAnalyzeSentiment(sample.text);
                     }}
-                    className="w-full p-2.5 text-left text-xs bg-slate-50 hover:bg-indigo-50/50 border border-slate-200 hover:border-indigo-200 rounded-xl transition space-y-0.5"
+                    className="w-full p-2.5 text-left text-xs bg-slate-50 hover:bg-indigo-50/50 border border-slate-200 hover:border-indigo-200 rounded-xl transition space-y-0.5 animate-fade-in"
                   >
                     <div className="font-bold text-slate-800 text-[11px]">{sample.label}</div>
                     <div className="text-[11px] text-slate-500 line-clamp-2">{sample.text}</div>
@@ -153,31 +166,29 @@ export const SentimentAnalyzerView: React.FC = () => {
 
         {/* Right Column: Preprocessing Steps & Sentiment Results */}
         <div className="lg:col-span-2 space-y-6">
-          {sentimentResult && (
+          {sentimentResult ? (
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
               {/* Sentiment Score Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className={`p-3 rounded-2xl ${
-                    sentimentResult.sentiment === 'Positive'
-                      ? 'bg-emerald-100 text-emerald-700'
-                      : sentimentResult.sentiment === 'Negative'
+                  <div className={`p-3 rounded-2xl ${sentimentResult.sentiment === 'Positive'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : sentimentResult.sentiment === 'Negative'
                       ? 'bg-rose-100 text-rose-700'
                       : 'bg-amber-100 text-amber-700'
-                  }`}>
+                    }`}>
                     {sentimentResult.sentiment === 'Positive' && <Smile className="w-8 h-8" />}
                     {sentimentResult.sentiment === 'Negative' && <Frown className="w-8 h-8" />}
                     {sentimentResult.sentiment === 'Neutral' && <Meh className="w-8 h-8" />}
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <span className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
-                        sentimentResult.sentiment === 'Positive'
-                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                          : sentimentResult.sentiment === 'Negative'
-                          ? 'bg-rose-100 text-rose-800 border border-rose-300'
-                          : 'bg-amber-100 text-amber-800 border border-amber-300'
-                      }`}>
+                      <span className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider border ${sentimentResult.sentiment === 'Positive'
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        : sentimentResult.sentiment === 'Negative'
+                          ? 'bg-rose-50 text-rose-700 border-rose-200'
+                          : 'bg-amber-50 text-amber-700 border-amber-200'
+                        }`}>
                         {sentimentResult.sentiment} Sentiment
                       </span>
                       <span className="text-xs text-slate-400 font-mono">
@@ -185,28 +196,27 @@ export const SentimentAnalyzerView: React.FC = () => {
                       </span>
                     </div>
                     <h3 className="text-base font-extrabold text-slate-900 mt-1">
-                      Polarity Score: {sentimentResult.polarityScore > 0 ? `+${sentimentResult.polarityScore}` : sentimentResult.polarityScore}
+                      Polarity Value Matrix: {sentimentResult.polarityScore > 0 ? `+${sentimentResult.polarityScore}` : sentimentResult.polarityScore}
                     </h3>
                   </div>
                 </div>
 
-                {/* Polarity Bar Indicator */}
+                {/* Polarity Slider Gauge */}
                 <div className="w-full sm:w-48 space-y-1">
-                  <div className="flex justify-between text-[11px] font-semibold text-slate-500">
+                  <div className="flex justify-between text-[10px] font-mono font-bold text-slate-400">
                     <span>-1.0 Negative</span>
                     <span>+1.0 Positive</span>
                   </div>
-                  <div className="w-full bg-slate-200 h-2.5 rounded-full relative overflow-hidden">
+                  <div className="w-full bg-slate-200 h-2.5 rounded-full relative overflow-hidden border border-slate-300 shadow-inner">
                     <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        sentimentResult.polarityScore >= 0 ? 'bg-emerald-500' : 'bg-rose-500'
-                      }`}
+                      className={`h-full rounded-full transition-all duration-500 ${sentimentResult.polarityScore >= 0 ? 'bg-emerald-500' : 'bg-rose-500'
+                        }`}
                       style={{
                         width: `${Math.abs(sentimentResult.polarityScore) * 100}%`,
                         marginLeft: sentimentResult.polarityScore >= 0 ? '50%' : `${50 - Math.abs(sentimentResult.polarityScore) * 50}%`,
                       }}
                     ></div>
-                    <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-400"></div>
+                    <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-500"></div>
                   </div>
                 </div>
               </div>
@@ -220,16 +230,16 @@ export const SentimentAnalyzerView: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   {/* Step 1: Lowercase & Punctuation */}
                   <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
-                    <div className="font-bold text-indigo-600 text-[11px] uppercase">Step 1: Lowercase & Cleaned</div>
-                    <p className="text-slate-600 font-mono text-[11px] leading-relaxed bg-white p-2 rounded border border-slate-200">
+                    <div className="font-bold text-indigo-600 text-[11px] uppercase">Step 1: Token Cleaned String</div>
+                    <p className="text-slate-600 font-mono text-[11px] leading-relaxed bg-white p-2 rounded border border-slate-200 min-h-20">
                       "{sentimentResult.cleanedText}"
                     </p>
                   </div>
 
                   {/* Step 2: Stopwords Removed */}
                   <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
-                    <div className="font-bold text-cyan-600 text-[11px] uppercase">Step 2: Stopwords Filtered ({sentimentResult.stopwordsRemoved.length} tokens)</div>
-                    <div className="flex flex-wrap gap-1 bg-white p-2 rounded border border-slate-200 max-h-20 overflow-y-auto">
+                    <div className="font-bold text-cyan-600 text-[11px] uppercase">Step 2: Stopwords Filtered ({sentimentResult.stopwordsRemoved.length} Encodings)</div>
+                    <div className="flex flex-wrap gap-1 bg-white p-2 rounded border border-slate-200 max-h-20 overflow-y-auto min-h-20">
                       {sentimentResult.stopwordsRemoved.map((tok, i) => (
                         <span key={i} className="px-1.5 py-0.5 bg-indigo-50 text-indigo-700 font-mono text-[10px] rounded border border-indigo-200">
                           {tok}
@@ -248,15 +258,14 @@ export const SentimentAnalyzerView: React.FC = () => {
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {sentimentResult.aspects.map((asp, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                      <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200 shadow-2xs">
                         <span className="font-bold text-slate-800">{asp.aspect}</span>
-                        <span className={`px-2 py-0.5 rounded text-[11px] font-semibold ${
-                          asp.sentiment === 'Positive'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : asp.sentiment === 'Negative'
-                            ? 'bg-rose-100 text-rose-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${asp.sentiment === 'Positive'
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                          : asp.sentiment === 'Negative'
+                            ? 'bg-rose-50 text-rose-700 border-rose-200'
+                            : 'bg-amber-50 text-amber-700 border-amber-200'
+                          }`}>
                           {asp.sentiment} ({Math.round(asp.score * 100)}%)
                         </span>
                       </div>
@@ -265,9 +274,17 @@ export const SentimentAnalyzerView: React.FC = () => {
                 </div>
               )}
 
+              {/* Model Summary Ribbon */}
               <div className="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-950 text-xs">
-                <strong>NLP Summary:</strong> {sentimentResult.summary}
+                <div className="font-bold text-slate-800 flex items-center gap-1 mb-0.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> NLP Pipeline Summary:
+                </div>
+                <p className="text-indigo-900">{sentimentResult.summary}</p>
               </div>
+            </div>
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center border border-dashed border-slate-200 rounded-2xl p-8 text-center text-xs text-slate-400 font-mono bg-slate-50/50">
+              Awaiting text token ingestion arrays...
             </div>
           )}
         </div>

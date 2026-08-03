@@ -3,8 +3,9 @@
 venv/
 ENV/
 
-# Node Dependencies
+# Node Dependencies & Build Output
 node_modules/
+dist/
 
 # Python Caches & Build Artifacts
 __pycache__/
@@ -17,10 +18,11 @@ temp_wheels/
 .vscode/
 .idea/
 
-# Large Model Binaries & Datasets (Protects Git Push limits)
-app/models/*.h5
-app/models/*.pkl
-data/
+# User Personal Photos & Temporary Media
+roshmik.*
+*.jpg
+*.jpeg
+*.png
 
 # Security Credentials
 .env

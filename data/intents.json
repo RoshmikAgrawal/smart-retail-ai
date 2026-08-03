@@ -1,0 +1,380 @@
+[
+  {
+    "tag": "store_hours",
+    "category": "Store Info",
+    "patterns": [
+      "What are your store opening hours?",
+      "When do you open and close?",
+      "Is the shop open on weekends?",
+      "Store timings today",
+      "Are you open right now?",
+      "What time do you close on Sunday?"
+    ],
+    "responses": [
+      "Our flagship retail stores are open Monday to Saturday from 9:00 AM to 9:00 PM, and Sundays from 10:00 AM to 6:00 PM EST.",
+      "We operate 9:00 AM - 9:00 PM Mon-Sat and 10:00 AM - 6:00 PM on Sundays. Online shopping is available 24/7!"
+    ]
+  },
+  {
+    "tag": "return_policy",
+    "category": "Returns & Refunds",
+    "patterns": [
+      "What is your return policy?",
+      "How do I return an item?",
+      "Can I get a full refund?",
+      "Return period for clothing",
+      "Do I need a receipt to return?",
+      "How many days to return a product?"
+    ],
+    "responses": [
+      "We offer a 30-day hassle-free return policy for unworn items with original tags and receipt. Refunds are processed to the original payment method within 3-5 business days.",
+      "You can return any unopened or tagged product within 30 days at any of our store locations or by printing a pre-paid return label from your customer account."
+    ]
+  },
+  {
+    "tag": "order_tracking",
+    "category": "Order Tracking",
+    "patterns": [
+      "Where is my order?",
+      "Track my package",
+      "Order status update",
+      "When will my shipment arrive?",
+      "My order tracking number",
+      "Check shipment status"
+    ],
+    "responses": [
+      "You can track your order status live by visiting our tracking portal or asking me with your 8-digit Order ID (e.g. #ORD-84920).",
+      "Orders typically ship within 24 hours. Enter your Order ID or phone number to get live GPS tracking details!"
+    ]
+  },
+  {
+    "tag": "loyalty_program",
+    "category": "Rewards & VIP",
+    "patterns": [
+      "How does the loyalty rewards program work?",
+      "How many points do I have?",
+      "How do I redeem VIP points?",
+      "VIP customer benefits",
+      "Join smart retail rewards",
+      "What are loyalty points worth?"
+    ],
+    "responses": [
+      "Our AI Smart Rewards automatically credits 10 points for every $1 spent and instantly recognizes returning VIPs via facial check-in! 500 points = $10 store credit.",
+      "VIP members receive exclusive 15% discounts, early access to new arrivals, and automatic in-store greeting."
+    ]
+  },
+  {
+    "tag": "payment_methods",
+    "category": "Billing",
+    "patterns": [
+      "What payment methods do you accept?",
+      "Can I pay with Apple Pay or Google Pay?",
+      "Do you take credit cards?",
+      "Is contactless payment supported?",
+      "Can I pay with cash or gift card?"
+    ],
+    "responses": [
+      "We accept Visa, MasterCard, American Express, Apple Pay, Google Pay, Tap-to-Pay, cash, and Smart Retail Store Credit.",
+      "All major credit/debit cards, contactless NFC payments (Apple/Google Pay), and gift cards are supported at checkout."
+    ]
+  },
+  {
+    "tag": "shipping_options",
+    "category": "Delivery",
+    "patterns": [
+      "What are the delivery charges?",
+      "Do you offer free shipping?",
+      "Same day delivery available?",
+      "International shipping cost",
+      "How fast is standard shipping?"
+    ],
+    "responses": [
+      "We offer Free Standard Express Delivery on all orders over $50! Same-day local delivery is available for orders placed before 2:00 PM EST.",
+      "Standard shipping takes 2-3 business days ($4.99 or FREE over $50). Express overnight shipping is available for $12.99."
+    ]
+  },
+  {
+    "tag": "store_location",
+    "category": "Store Info",
+    "patterns": [
+      "Where is your store located?",
+      "Find nearest store branch",
+      "Store address and directions",
+      "Do you have a shop near me?",
+      "Which city has your retail store?"
+    ],
+    "responses": [
+      "Our main flagship store is located at 742 Evergreen Terrace, Retail Plaza Center. We also have 12 urban branch locations across major shopping centers.",
+      "You can find your nearest Smart Retail store location and interactive map by checking our store locator page or asking for a specific city."
+    ]
+  },
+  {
+    "tag": "exchange_policy",
+    "category": "Returns & Refunds",
+    "patterns": [
+      "Can I exchange an item for a different size?",
+      "How to swap an item for another color?",
+      "Exchange process in store",
+      "Can I exchange an online purchase in store?",
+      "Is item exchange free?"
+    ],
+    "responses": [
+      "Yes! Item exchanges for a different size or color are 100% free within 30 days both in store and online.",
+      "Bring your item and receipt to any Smart Retail branch for instant size exchange, or request an exchange order online."
+    ]
+  },
+  {
+    "tag": "size_guide",
+    "category": "Product Info",
+    "patterns": [
+      "How do I find my clothing size?",
+      "Size chart for shoes and apparel",
+      "Do your clothes fit true to size?",
+      "Size measurement guide",
+      "Is size Small or Medium better for me?"
+    ],
+    "responses": [
+      "Our clothing and footwear generally fit true to size! You can view our interactive 3D Sizing Chart on each product page for exact chest, waist, and footwear dimensions.",
+      "We recommend checking the sizing recommendations on the product page or trying items on in our smart fitting rooms."
+    ]
+  },
+  {
+    "tag": "discounts_coupons",
+    "category": "Offers & Promos",
+    "patterns": [
+      "Are there any promo codes active today?",
+      "Do you have student or military discounts?",
+      "How to apply a coupon code?",
+      "Current sale offers and discounts",
+      "First time buyer discount"
+    ],
+    "responses": [
+      "New customers get 15% OFF their first order with promo code `WELCOME15`! Students and military personnel enjoy a 10% discount verified via ID.me.",
+      "Check our Deals page for active promo codes! Enter code `SMART10` at checkout for $10 off orders above $75."
+    ]
+  },
+  {
+    "tag": "gift_cards",
+    "category": "Gifts & Vouchers",
+    "patterns": [
+      "Do you sell digital gift cards?",
+      "How to check gift card balance?",
+      "Can I send a gift card via email?",
+      "Where to buy store gift vouchers?",
+      "How to redeem gift card online?"
+    ],
+    "responses": [
+      "Smart Retail Digital Gift Cards are available in amounts from $25 to $500! They are delivered instantly via email with no expiration date.",
+      "You can check your gift card balance at checkout or in your account dashboard by entering your 16-digit card number."
+    ]
+  },
+  {
+    "tag": "customer_support_contact",
+    "category": "Customer Support",
+    "patterns": [
+      "How can I talk to a live agent?",
+      "Customer care phone number",
+      "Email address for support team",
+      "Contact human support",
+      "Speak to customer service manager"
+    ],
+    "responses": [
+      "Our customer support team is available via live chat 24/7 or phone at 1-800-SMART-RETAIL (1-800-762-7873) Mon-Fri 8am-8pm EST.",
+      "You can email us at support@smartretail.ai or click 'Talk to Live Agent' in the chat window to be connected immediately."
+    ]
+  },
+  {
+    "tag": "product_warranty",
+    "category": "Product Info",
+    "patterns": [
+      "Does this product come with a warranty?",
+      "How long is the electronics warranty?",
+      "Warranty claim process",
+      "What is covered under warranty?",
+      "Repair and replacement policy"
+    ],
+    "responses": [
+      "All electronic items and premium leather goods come with a 1-Year Limited Manufacturer Warranty covering defects in material and workmanship.",
+      "To file a warranty claim, log into your account, select your order, and click 'File Warranty Claim' for a free replacement or repair."
+    ]
+  },
+  {
+    "tag": "in_store_pickup",
+    "category": "Delivery",
+    "patterns": [
+      "Can I order online and pick up in store?",
+      "Curbside pickup instructions",
+      "How long does click and collect take?",
+      "Is store pickup free?",
+      "Notification when order is ready for pickup"
+    ],
+    "responses": [
+      "Yes! Free Buy-Online-Pick-Up-In-Store (BOPIS) is ready within 2 hours at your selected local store branch.",
+      "When your pickup order is ready, you'll receive an SMS and email with a barcode. Show your barcode at the customer desk or reserved parking spot!"
+    ]
+  },
+  {
+    "tag": "stock_availability",
+    "category": "Inventory",
+    "patterns": [
+      "Is an item in stock at my local store?",
+      "When will out of stock items be restocked?",
+      "Check inventory availability",
+      "Can I reserve an item in store?",
+      "Notify me when back in stock"
+    ],
+    "responses": [
+      "You can check real-time store stock availability on any product page by entering your ZIP code or selecting your local store.",
+      "Out of stock items are typically restocked within 5-7 business days. Click 'Notify Me' on the product page to receive an instant restock alert!"
+    ]
+  },
+  {
+    "tag": "account_management",
+    "category": "Account",
+    "patterns": [
+      "How to reset my account password?",
+      "Update shipping address in account",
+      "Create new customer profile",
+      "Delete customer account",
+      "Can't log into my account"
+    ],
+    "responses": [
+      "You can manage your account settings, addresses, and saved payment methods in your Customer Dashboard. Click 'Forgot Password' on the login screen to reset your password.",
+      "Log into your Smart Retail profile to edit personal info, view purchase history, and update notification preferences."
+    ]
+  },
+  {
+    "tag": "damaged_item",
+    "category": "Returns & Refunds",
+    "patterns": [
+      "My order arrived damaged or broken",
+      "Package was crushed during delivery",
+      "Received defective product",
+      "Item stopped working upon arrival",
+      "Report damaged shipment"
+    ],
+    "responses": [
+      "We're so sorry to hear that! Please upload a quick photo of the damaged item in your order history for an instant free replacement or full refund.",
+      "Our Smart Support team will immediately ship a brand new replacement package at zero extra cost for any damaged items."
+    ]
+  },
+  {
+    "tag": "membership_tiers",
+    "category": "Rewards & VIP",
+    "patterns": [
+      "What are the VIP membership tiers?",
+      "How to reach Gold or Platinum status?",
+      "Gold member benefits",
+      "Difference between Silver and Gold tier",
+      "Loyalty tier perk summary"
+    ],
+    "responses": [
+      "Our Smart Rewards program features 3 Tiers: Silver (0-999 pts), Gold VIP (1,000-2,499 pts), and Platinum VIP (2,500+ pts). Higher tiers enjoy free express shipping and double points multiplier!",
+      "Gold members earn 1.5x points per dollar, while Platinum members earn 2x points plus priority facial recognition greeting at store check-in."
+    ]
+  },
+  {
+    "tag": "sustainability_ethics",
+    "category": "Corporate Info",
+    "patterns": [
+      "Are your products eco friendly?",
+      "Sustainability policy and recycling",
+      "Is cotton organic and ethically sourced?",
+      "Carbon footprint and packaging",
+      "Animal cruelty free policy"
+    ],
+    "responses": [
+      "100% of our apparel line uses GOTS-certified organic cotton and recycled polyester. We are committed to 100% carbon-neutral shipping and eco-friendly recyclable packaging.",
+      "Smart Retail strictly adheres to fair trade manufacturing standards and zero animal testing across all product categories."
+    ]
+  },
+  {
+    "tag": "cancellation_policy",
+    "category": "Order Tracking",
+    "patterns": [
+      "Can I cancel my order?",
+      "How to stop an order before shipping?",
+      "Order cancellation timeframe",
+      "Cancel order button not working",
+      "Will I get a full refund if I cancel?"
+    ],
+    "responses": [
+      "Orders can be canceled free of charge within 60 minutes of placing them directly from your Order Details page.",
+      "If your order has already been processed for shipping, you can decline delivery or use our free 30-day return portal once received."
+    ]
+  },
+  {
+    "tag": "smart_fitting_room",
+    "category": "Store Info",
+    "patterns": [
+      "What is the smart fitting room?",
+      "How does interactive mirror work?",
+      "Request different size from fitting room",
+      "AI fashion recommendations in store"
+    ],
+    "responses": [
+      "Our Smart Fitting Rooms feature interactive touch mirrors that display alternative sizes, color options, and AI outfit recommendations, allowing you to request items sent directly to your cabin!",
+      "Simply tap the mirror in your fitting room to request a sales associate bring a different size without walking out."
+    ]
+  },
+  {
+    "tag": "price_match_guarantee",
+    "category": "Pricing",
+    "patterns": [
+      "Do you price match competitors?",
+      "Price match policy",
+      "If price drops after purchase can I get a refund?",
+      "Lowest price guarantee",
+      "Price adjustment request"
+    ],
+    "responses": [
+      "Yes! We offer a 14-Day Price Match Guarantee against major retail competitors and will refund the difference if an item's price drops within 14 days of purchase.",
+      "Show lower price verification to any associate or submit a price adjustment claim online for instant store credit refund."
+    ]
+  },
+  {
+    "tag": "careers_jobs",
+    "category": "Corporate Info",
+    "patterns": [
+      "Are you hiring at retail stores?",
+      "Career opportunities and jobs",
+      "How to apply for a job?",
+      "Retail associate job application",
+      "AI engineering open roles"
+    ],
+    "responses": [
+      "We're always looking for passionate retail associates, store managers, and AI software engineers! Explore open opportunities on our Careers page at smartretail.ai/careers.",
+      "Submit your resume online to join our growing retail technology team!"
+    ]
+  },
+  {
+    "tag": "privacy_data_ethics",
+    "category": "Ethics & Security",
+    "patterns": [
+      "How is my facial recognition data used?",
+      "Is face data stored securely?",
+      "Data privacy policy for biometric data",
+      "Can I opt out of face recognition check-in?",
+      "GDPR and CCPA compliance"
+    ],
+    "responses": [
+      "Your privacy is our highest priority. Facial encodings are 100% encrypted, stored locally as anonymized vector hashes, never sold to third parties, and customers can opt out at any time.",
+      "We strictly comply with GDPR and CCPA regulations. Facial recognition is strictly opt-in for VIP loyalty members."
+    ]
+  },
+  {
+    "tag": "clearance_sale",
+    "category": "Offers & Promos",
+    "patterns": [
+      "When is the next clearance sale?",
+      "End of season sale discounts",
+      "Are clearance items returnable?",
+      "Black Friday holiday deals",
+      "Final sale item policy"
+    ],
+    "responses": [
+      "Our End-of-Season Clearance Sale offers up to 70% OFF across clothing, footwear, and accessories! Final sale items are non-returnable unless defective.",
+      "Check the Clearance section in store or online for deep discounts updated every Thursday!"
+    ]
+  }
+]

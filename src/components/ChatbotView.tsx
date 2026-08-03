@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  Bot, 
-  Send, 
-  RefreshCw, 
-  Layers, 
+import {
+  Bot,
+  Send,
+  RefreshCw,
+  Layers,
   BookOpen,
   User
 } from 'lucide-react';
 import { ChatMessage, FAQIntent } from '../types';
+
+const BACKEND_URL = 'http://localhost:8000';
 
 export const ChatbotView: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -28,15 +30,19 @@ export const ChatbotView: React.FC = () => {
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  // Sync intents dataset visualization from the backend configuration tree
   useEffect(() => {
-    fetch('/api/intents')
+    fetch(`${BACKEND_URL}/api/intents`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) setIntentsList(data.data);
+        if (data.success && data.data) {
+          setIntentsList(data.data);
+        }
       })
       .catch((err) => console.error('Failed to fetch intents dataset:', err));
   }, []);
 
+  // Maintain fluid, real-time message tracking views
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
@@ -57,24 +63,30 @@ export const ChatbotView: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/chatbot', {
+      const response = await fetch(`${BACKEND_URL}/api/chatbot`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': 'retail_ai_secret_handshake_2026' },
         body: JSON.stringify({ message: textToSend }),
       });
 
       const resData = await response.json();
-      if (resData.success) {
+
+      if (resData.success && resData.data) {
         setMessages((prev) => [...prev, resData.data]);
+      } else {
+        // Handle explicit backend validation drops gracefully
+        throw new Error(resData.error || 'Intent compilation anomaly encountered.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Chatbot endpoint error:', error);
       const fallbackMsg: ChatMessage = {
         id: `BOT-ERR-${Date.now()}`,
         sender: 'bot',
-        text: 'Our store support team is available Mon-Sat 9am-9pm EST. How else can I assist you?',
+        text: "I am having trouble processing that right now. Our store support team is available Mon-Sat 9am-9pm EST. How else can I assist you?",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        source: 'rule_based_faq',
+        source: 'fallback_engine',
+        intentTag: 'system_error',
+        confidence: 0.0
       };
       setMessages((prev) => [...prev, fallbackMsg]);
     } finally {
@@ -112,7 +124,7 @@ export const ChatbotView: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Interactive Chat Interface */}
+        {/* Left Column: Interactive Chat Workspace */}
         <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[580px]">
           {/* Chat Titlebar */}
           <div className="p-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
@@ -133,7 +145,7 @@ export const ChatbotView: React.FC = () => {
             </span>
           </div>
 
-          {/* Messages Container */}
+          {/* Messages Stream */}
           <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50/50">
             {messages.map((msg) => (
               <div
@@ -141,17 +153,16 @@ export const ChatbotView: React.FC = () => {
                 className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl p-4 text-xs sm:text-sm space-y-2 shadow-xs ${
-                    msg.sender === 'user'
-                      ? 'bg-indigo-600 text-white rounded-br-none'
-                      : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'
-                  }`}
+                  className={`max-w-[85%] rounded-2xl p-4 text-xs sm:text-sm space-y-2 shadow-sm ${msg.sender === 'user'
+                    ? 'bg-indigo-600 text-white rounded-br-none'
+                    : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'
+                    }`}
                 >
-                  <div className="flex items-center justify-between gap-2 text-[10px] text-slate-400 border-b border-slate-100 pb-1">
+                  <div className="flex items-center justify-between gap-4 text-[10px] text-slate-400 border-b border-slate-100 pb-1">
                     <span className="font-bold uppercase tracking-wider flex items-center gap-1 text-slate-500">
                       {msg.sender === 'user' ? (
                         <>
-                          <User className="w-3 h-3 text-white" /> You
+                          <User className="w-3 h-3 text-indigo-200" /> You
                         </>
                       ) : (
                         <>
@@ -164,17 +175,16 @@ export const ChatbotView: React.FC = () => {
 
                   <p className="leading-relaxed font-normal whitespace-pre-wrap">{msg.text}</p>
 
-                  {/* Intent Resolution Badge for Bot responses */}
+                  {/* Operational Telemetry Metadata Matrix */}
                   {msg.sender === 'bot' && msg.intentTag && (
                     <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[10px]">
                       <span className="font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-200">
                         Intent: #{msg.intentTag}
                       </span>
-                      <span className={`px-2 py-0.5 rounded font-semibold ${
-                        msg.source === 'rule_based_faq'
-                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                          : 'bg-amber-100 text-amber-800 border border-amber-300'
-                      }`}>
+                      <span className={`px-2 py-0.5 rounded font-semibold border ${msg.source === 'rule_based_faq'
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        : 'bg-amber-50 text-amber-700 border-amber-200'
+                        }`}>
                         Source: {msg.source === 'rule_based_faq' ? 'Rule Match' : 'ML Fallback'} ({Math.round((msg.confidence || 0.85) * 100)}%)
                       </span>
                     </div>
@@ -184,9 +194,9 @@ export const ChatbotView: React.FC = () => {
             ))}
 
             {loading && (
-              <div className="flex items-center space-x-2 text-xs text-slate-500 bg-white p-3 rounded-2xl border border-slate-200 w-fit">
+              <div className="flex items-center space-x-2 text-xs text-slate-500 bg-white p-3 rounded-2xl border border-slate-200 w-fit shadow-sm animate-pulse">
                 <RefreshCw className="w-4 h-4 animate-spin text-indigo-600" />
-                <span>Matching patterns & computing intent embeddings...</span>
+                <span>Matching patterns & computing intent classification structures...</span>
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -199,34 +209,35 @@ export const ChatbotView: React.FC = () => {
               <button
                 key={i}
                 onClick={() => handleSendMessage(prompt)}
-                className="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 text-xs rounded-lg border border-slate-200 transition shadow-xs flex-shrink-0"
+                className="px-2.5 py-1 bg-white hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 text-xs rounded-lg border border-slate-200 transition shadow-sm flex-shrink-0"
               >
                 {prompt}
               </button>
             ))}
           </div>
 
-          {/* Input Box */}
+          {/* User Entry Processing Input Box */}
           <div className="p-3 bg-white border-t border-slate-200 flex items-center space-x-2">
             <input
               type="text"
               value={inputText}
+              disabled={loading}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Ask a customer service question..."
-              className="flex-1 p-2.5 text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="flex-1 p-2.5 text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none disabled:opacity-60"
             />
             <button
               onClick={() => handleSendMessage()}
               disabled={loading || !inputText.trim()}
-              className="p-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-md transition disabled:opacity-50"
+              className="p-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-md transition disabled:bg-slate-300 disabled:shadow-none"
             >
               <Send className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Right Column: Intent Training Dataset Browser */}
+        {/* Right Column: Active Intents Dataset Explorer */}
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -234,29 +245,35 @@ export const ChatbotView: React.FC = () => {
                 <Layers className="w-4 h-4 text-indigo-600" />
                 Intents Dataset (intents.json)
               </h3>
-              <span className="text-[10px] font-mono text-slate-500">{intentsList.length} Intent Categories</span>
+              <span className="text-[10px] font-mono text-slate-500">{intentsList.length} Categories</span>
             </div>
 
             <div className="space-y-3 max-h-[460px] overflow-y-auto pr-1">
-              {intentsList.map((intent) => (
-                <div key={intent.tag} className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5 text-xs">
-                  <div className="flex items-center justify-between">
-                    <span className="font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 font-mono">
-                      #{intent.tag}
-                    </span>
-                    <span className="text-[10px] text-slate-500 font-medium">{intent.category}</span>
-                  </div>
+              {intentsList.length > 0 ? (
+                intentsList.map((intent) => (
+                  <div key={intent.tag} className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="font-extrabold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 font-mono">
+                        #{intent.tag}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-medium">{intent.category}</span>
+                    </div>
 
-                  <div className="space-y-1 pt-1">
-                    <div className="text-[11px] font-bold text-slate-700">Matched Patterns:</div>
-                    <ul className="text-[11px] text-slate-600 space-y-0.5 list-disc list-inside">
-                      {intent.patterns.slice(0, 3).map((pat, i) => (
-                        <li key={i} className="truncate">"{pat}"</li>
-                      ))}
-                    </ul>
+                    <div className="space-y-1 pt-1">
+                      <div className="text-[11px] font-bold text-slate-700">Sample Training Phrases:</div>
+                      <ul className="text-[11px] text-slate-500 space-y-0.5 list-disc list-inside">
+                        {intent.patterns.slice(0, 3).map((pat, i) => (
+                          <li key={i} className="truncate">"{pat}"</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="text-center py-8 text-xs text-slate-400 font-mono border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
+                  Awaiting connection to network endpoint...
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>

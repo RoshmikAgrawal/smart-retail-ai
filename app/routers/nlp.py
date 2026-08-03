@@ -3,10 +3,10 @@ from app.services.nlp_service import nlp_service
 from app.schemas import ApiResponse, SentimentRequest, SentimentResponseData
 
 #router = APIRouter(prefix="/api/nlp", tags=["Natural Language Processing"])
-router = APIRouter(prefix="/api", tags=["Natural Language Processing"])
+router = APIRouter(tags=["Natural Language Processing"])
 
-@router.post("/nlp/analyze", response_model=ApiResponse[SentimentResponseData])
 @router.post("/analyze-sentiment", response_model=ApiResponse[SentimentResponseData])
+@router.post("/nlp/analyze", response_model=ApiResponse[SentimentResponseData], include_in_schema=False)
 async def analyze_text_sentiment(payload: SentimentRequest):
     """
     Fulfills Module B1 and B2 pipeline requirements by processing raw text reviews

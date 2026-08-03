@@ -3,7 +3,7 @@ from app.services.chatbot_service import chatbot_service
 from app.schemas import ApiResponse, ChatMessageRequest, ChatMessageResponseData
 
 # router = APIRouter(prefix="/api/chatbot", tags=["Chatbot Module"])
-router = APIRouter(prefix="/api", tags=["Chatbot Module"])
+router = APIRouter(tags=["Chatbot Module"])
 
 # @router.post("/chatbot", response_model=ApiResponse[ChatMessageResponseData])
 @router.post("/chatbot", response_model=ApiResponse[ChatMessageResponseData])

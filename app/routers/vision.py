@@ -11,11 +11,11 @@ from app.schemas import (
     ProductClassificationRequest
 )
 
-router = APIRouter(prefix="/api", tags=["Computer Vision"])
+router = APIRouter(tags=["Computer Vision"])
 real_face_engine = RetailFaceRecognizer()
 
-@router.post("/vision/recognize-face", response_model=ApiResponse[FaceRecognitionResponseData])
 @router.post("/recognize-face", response_model=ApiResponse[FaceRecognitionResponseData])
+@router.post("/vision/recognize-face", response_model=ApiResponse[FaceRecognitionResponseData], include_in_schema=False)
 async def recognize_customer_face(
     payload: Optional[FaceRecognitionRequest] = Body(None),
     file: Optional[UploadFile] = File(None), 
@@ -39,20 +39,13 @@ async def recognize_customer_face(
         if file:
             image_bytes = await file.read()
 
-        if image_bytes and len(image_bytes) > 100:
-            try:
-                pipeline_result = real_face_engine.process_pipeline(image_bytes)
-                return {"success": True, "data": pipeline_result}
-            except Exception:
-                pass
-
-        fallback_result = cv_service.recognize_face(customer_hint=customer_hint)
-        return {"success": True, "data": fallback_result}
+        pipeline_result = real_face_engine.process_pipeline(image_bytes=image_bytes or b"", target_hint=customer_hint)
+        return {"success": True, "data": pipeline_result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/vision/classify-product", response_model=ApiResponse[ProductClassificationResponseData])
 @router.post("/classify-product", response_model=ApiResponse[ProductClassificationResponseData])
+@router.post("/vision/classify-product", response_model=ApiResponse[ProductClassificationResponseData], include_in_schema=False)
 async def classify_retail_product(
     payload: Optional[ProductClassificationRequest] = Body(None),
     file: Optional[UploadFile] = File(None), 

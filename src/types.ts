@@ -113,6 +113,8 @@ export interface DashboardStats {
   };
 }
 
+export type DashboardStatsData = DashboardStats;
+
 export interface ApiEndpointSpec {
   method: 'GET' | 'POST';
   path: string;

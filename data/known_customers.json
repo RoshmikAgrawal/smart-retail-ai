@@ -1,0 +1,57 @@
+[
+  {
+    "id": "CUST-1001",
+    "name": "Sarah Jenkins",
+    "status": "VIP",
+    "loyaltyTier": "Gold",
+    "loyaltyPoints": 2460,
+    "visitsCount": 19,
+    "preferredCategory": "Clothing",
+    "photoUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250",
+    "faceEncodingHash": "enc_sarah_1001"
+  },
+  {
+    "id": "CUST-1002",
+    "name": "Marcus Vance",
+    "status": "VIP",
+    "loyaltyTier": "Gold",
+    "loyaltyPoints": 1900,
+    "visitsCount": 15,
+    "preferredCategory": "Electronics",
+    "photoUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250",
+    "faceEncodingHash": "enc_marcus_1002"
+  },
+  {
+    "id": "CUST-1003",
+    "name": "Elena Rostova",
+    "status": "Platinum VIP",
+    "loyaltyTier": "Platinum",
+    "loyaltyPoints": 3910,
+    "visitsCount": 27,
+    "preferredCategory": "Bags & Accessories",
+    "photoUrl": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=250",
+    "faceEncodingHash": "enc_elena_1003"
+  },
+  {
+    "id": "CUST-1004",
+    "name": "David Chen",
+    "status": "Returning",
+    "loyaltyTier": "Gold",
+    "loyaltyPoints": 950,
+    "visitsCount": 8,
+    "preferredCategory": "Footwear",
+    "photoUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=250",
+    "faceEncodingHash": "enc_david_1004"
+  },
+  {
+    "id": "CUST-1005",
+    "name": "Roshmik Agrawal",
+    "status": "VIP",
+    "loyaltyTier": "Platinum",
+    "loyaltyPoints": 5000,
+    "visitsCount": 44,
+    "preferredCategory": "All Categories",
+    "photoUrl": "https://images.unsplash.com/photo-15395371696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=250",
+    "faceEncodingHash": "enc_roshmik_1005"
+  }
+]

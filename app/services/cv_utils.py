@@ -5,9 +5,13 @@ import numpy as np
 class OpenCVImageProcessor:
     def __init__(self):
         # Resolve the built-in Haar Cascade XML path safely
-        cv2_data = getattr(cv2, "data", None)
-        cascade_dir = cv2_data.haarcascades if cv2_data else ""
-        self.cascade_path = os.path.join(cascade_dir, 'haarcascade_frontalface_default.xml')
+        root_xml = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "haarcascade_frontalface_default.xml"))
+        if os.path.exists(root_xml):
+            self.cascade_path = root_xml
+        else:
+            cv2_data = getattr(cv2, "data", None)
+            cascade_dir = cv2_data.haarcascades if cv2_data else ""
+            self.cascade_path = os.path.join(cascade_dir, 'haarcascade_frontalface_default.xml')
         
         # Safe execution check wrapper against OS application policy limits
         try:
