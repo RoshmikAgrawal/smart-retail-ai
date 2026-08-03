@@ -1,0 +1,26 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Node Dependencies
+node_modules/
+
+# Python Caches & Build Artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+temp_wheels/
+*.egg-info/
+
+# IDE Settings
+.vscode/
+.idea/
+
+# Large Model Binaries & Datasets (Protects Git Push limits)
+app/models/*.h5
+app/models/*.pkl
+data/
+
+# Security Credentials
+.env

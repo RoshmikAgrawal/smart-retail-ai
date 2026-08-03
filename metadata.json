@@ -1,0 +1,10 @@
+{
+  "name": "Smart Retail & Customer Intelligence Platform",
+  "description": "AI-Powered Smart Retail Platform with Face Recognition & Visit Logging, Product Category Classification, Feedback Sentiment Analysis, Hybrid FAQ Chatbot, and REST API Gateway.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
