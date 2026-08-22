@@ -13,4 +13,5 @@ pytest>=7.4.3
 httpx>=0.25.1
 kagglehub>=0.2.0
 h5py
-tensorflow
+tensorflow>=2.13.0
+keras>=2.13.0
