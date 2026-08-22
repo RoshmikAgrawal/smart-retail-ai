@@ -2,8 +2,8 @@
   "CUST-1000": {
     "customerId": "CUST-1000",
     "customerName": "Sarah Jenkins",
-    "visitCount": 11,
-    "loyaltyPoints": 1050,
+    "visitCount": 19,
+    "loyaltyPoints": 1450,
     "status": "VIP Returning Member"
   },
   "CUST-1001": {

@@ -14,4 +14,8 @@ httpx>=0.25.1
 kagglehub>=0.2.0
 h5py
 tensorflow>=2.13.0
+<<<<<<< HEAD
 keras>=2.13.0
+=======
+keras>=2.13.0
+>>>>>>> a6fad36747ecb583dee4a1a8f727b4d8a1b2fa19

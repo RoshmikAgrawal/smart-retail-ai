@@ -33,12 +33,12 @@ class MLPipeline:
         if face_db_path.exists():
             try:
                 try:
-                    import joblib
                     self.face_db = joblib.load(str(face_db_path))
                 except Exception:
                     with open(face_db_path, "rb") as f:
                         self.face_db = pickle.load(f)
-                num_entries = len(self.face_db.get("face_db", self.face_db)) if isinstance(self.face_db, dict) else len(self.face_db)
+                entries = (self.face_db.get("face_db") or self.face_db) if isinstance(self.face_db, dict) else self.face_db
+                num_entries = len(entries) if entries is not None else 0
                 print(f"[MLPipeline] Successfully loaded face database ({num_entries} gallery identities)[cite: 1].")
                 engines_loaded += 1
             except Exception as e:
@@ -52,7 +52,21 @@ class MLPipeline:
         if model_path.exists():
             try:
                 # Compile=False cuts model loading times significantly during quick boot presentations
-                self.product_classifier = tf.keras.models.load_model(str(model_path), compile=False)
+                try:
+                    self.product_classifier = tf.keras.models.load_model(str(model_path), compile=False)
+                except Exception:
+                    # Defensive fallback for Keras 3 deserialization compatibility with legacy H5 layer configs
+                    orig_from_config = getattr(tf.keras.layers.Dense, "from_config", None)
+                    if orig_from_config:
+                        tf.keras.layers.Dense.from_config = classmethod(  # type: ignore
+                            lambda cls, config: orig_from_config({k: v for k, v in config.items() if k != "quantization_config"})
+                        )
+                    try:
+                        self.product_classifier = tf.keras.models.load_model(str(model_path), compile=False)
+                    finally:
+                        if orig_from_config:
+                            tf.keras.layers.Dense.from_config = orig_from_config  # type: ignore
+
                 print("[MLPipeline] Successfully loaded Keras MobileNetV2 deep learning graph (.h5)[cite: 1].")
                 engines_loaded += 1
             except Exception as e:

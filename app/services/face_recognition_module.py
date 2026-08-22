@@ -2,6 +2,7 @@ import os
 import json
 import joblib
 import numpy as np
+from typing import Optional, cast, Any
 from datetime import datetime
 from sklearn.metrics.pairwise import cosine_similarity
 from app.services.cv_utils import OpenCVImageProcessor
@@ -96,9 +97,10 @@ class RetailFaceRecognizer:
             return {'status': 'new_customer', 'customer_id': None, 'confidence': 0.0}
 
         ids = list(self.face_db.keys())
-        gallery_vectors = list(self.face_db.values())
+        gallery_vectors = np.asarray(list(self.face_db.values()))
+        probe_vector = np.asarray(encoding).reshape(1, -1)
         
-        sims = cosine_similarity([encoding], gallery_vectors)[0]
+        sims = cosine_similarity(cast(Any, probe_vector), cast(Any, gallery_vectors))[0]
         best_idx = int(np.argmax(sims))
         best_sim = float(sims[best_idx])
 
@@ -115,7 +117,7 @@ class RetailFaceRecognizer:
                 'confidence': best_sim
             }
 
-    def process_pipeline(self, image_bytes: bytes, target_hint: str = None) -> dict:
+    def process_pipeline(self, image_bytes: Optional[bytes] = None, target_hint: Optional[str] = None) -> dict:
         """
         Module A3 Pipeline Specification:
         1. Detect Face & Preprocess via OpenCV cv_utils
@@ -198,7 +200,7 @@ class RetailFaceRecognizer:
                     status = "returning_customer"
                     confidence = 0.98
                 else:
-                    t_digits = ''.join(filter(str.isdigit, str(target_hint)))
+                    t_digits = ''.join(filter(str.isdigit, target_hint))
                     best_match_id = int(t_digits) % 40 if t_digits else 0
                     cust_id_str = f"CUST-10{best_match_id:02d}"
                     cust_name_str = target_hint
